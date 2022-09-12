@@ -1,6 +1,7 @@
-//Recuperation des produits de l'Api
+//déclaration de l'url des produits de l'Api
 let urlliste = "http://localhost:3000/api/products";
 
+//declaration de l'id de la page index
 let tabitems = document.getElementById('items');
 
 // fonction créer un element
@@ -23,20 +24,29 @@ async function getProduits() {
     }
 }
 
-//  fonction affiche la liste des produits
+//  fonction affiche la liste des produits dans la page index
 async function afficheProduits() {
+
+//declaration liste des produits recupérés    
   let produits = await getProduits();
-  let html = '';
+  
+  //parcourir chaque ligne de produits
   produits.forEach(arti => {
+  //creation des elements de la page index  
     let a = createNode('a');
     let article = createNode('article');
     let img = createNode('img');
     let h3 = createNode('h3');
     let p = createNode('p');
+  //attribution de l'image à l'element img
     img.src = arti.imageUrl;
+  //affichage du titre du produit
     h3.innerText = `${arti.name}`;
+ //affichage de la description du produit
     p.innerText = arti.description;
+ //attribution du lien du bouton affichez produit
     a.href = "./product.html?id="+arti._id;
+ //fonction pour ajouter les elementds de la page index dans les elements parents
     ajoutelement(article, img);
     ajoutelement(article, h3);
     ajoutelement(article, p);
