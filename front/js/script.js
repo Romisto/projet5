@@ -1,24 +1,48 @@
-//declaration du lien de l'API//
-const urlproduct = "http://localhost:3000/api/products";
+//Recuperation des produits de l'Api
+let urlliste = "http://localhost:3000/api/products";
 
-//declaration de la variable de recuperation de l'id section produit//
+let tabitems = document.getElementById('items');
 
-let tableitems = document.getElementById("items");
+// fonction créer un element
+function createNode(element) {
+    return document.createElement(element);
+}
 
-//affichage de la liste//
-fetch(urlproduct).then(Response =>{
-    return Response.json();
-    })
-    .then(product =>{
-        let articles = "";
-    product.forEach(arti => {
-        articles += '<a href="./product.html?id='+arti._id+'">'+
-        '<article>'+
-          '<img src="'+arti.imageUrl+'" alt="'+arti.altTxt+'">'+
-          '<h3 class="productName">'+arti.name+'</h3>'+
-          '<p class="productDescription">'+arti.description+'.</p>'+
-        '</article></a>';
-        
-    }); 
-    tableitems.innerHTML = articles;   
-})
+// fonction ajouter element dans un element parent
+function ajoutelement(parent, el) {
+  return parent.appendChild(el);
+}
+
+// fonction pour recupérer la liste produits a partir de url api
+async function getProduits() {
+    try {
+        let res = await fetch(urlliste);
+        return await res.json();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//  fonction affiche la liste des produits
+async function afficheProduits() {
+  let produits = await getProduits();
+  let html = '';
+  produits.forEach(arti => {
+    let a = createNode('a');
+    let article = createNode('article');
+    let img = createNode('img');
+    let h3 = createNode('h3');
+    let p = createNode('p');
+    img.src = arti.imageUrl;
+    h3.innerText = `${arti.name}`;
+    p.innerText = arti.description;
+    a.href = "./product.html?id="+arti._id;
+    ajoutelement(article, img);
+    ajoutelement(article, h3);
+    ajoutelement(article, p);
+    ajoutelement(a, article);
+    tabitems.appendChild(a);
+  });
+}
+
+afficheProduits();
