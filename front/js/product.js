@@ -12,7 +12,7 @@ let search_params = new URLSearchParams(url.search);
 
 // recherche si existe un id dans le url de la page produit, si oui attribution id
 if(search_params.has('id')) {
-  id = search_params.get('id');
+    id = search_params.get('id');
 }
 
 //declaration de l'url api de la fiche produit
@@ -29,7 +29,7 @@ let addcart = document.getElementById('addToCart');
 
 
 function nombreAvecEspace(nr) {
-	return nr.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return nr.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
 
@@ -45,9 +45,9 @@ async function getProduit() {
 
 // fonction pour afficher le détail d'un produit
 async function detailProduit() {
-//declaration du produit recuperé
- let produit = await getProduit();
-
+    //declaration du produit recuperé
+    let produit = await getProduit();
+    
     // affectation des valeurs à la fiche produit
     title.innerText = produit.name;
     price.innerText = nombreAvecEspace(produit.price);
@@ -59,12 +59,12 @@ async function detailProduit() {
         option.value = color;
         colors.appendChild(option);
     });
-
+    
     // image du produit
     let img = document.createElement("img");
     img.src = produit.imageUrl;
     itemimg.appendChild(img);
-
+    
 }
 
 detailProduit();
@@ -73,18 +73,18 @@ detailProduit();
 
 // fonction validation
 function validate() {
-      
+    
     if( colors.value == "" ) {
-       alert( "Choisir la couleur" );
-       colors.focus() ;
-       return false;
-    }
-    if( quantite.value == 0 ) {
-        alert( "Saisir la quantité" );
+        alert( "Choisir la couleur" );
         colors.focus() ;
         return false;
-     }
-     return true
+    }
+    if( quantite.value == 0 || quantite.value > 100 ) {
+        alert( "Saisir une quantité entre 1 et 100" );
+        colors.focus() ;
+        return false;
+    }
+    return true
 }
 
 function ajoutpanier(idprod,qte,couleur){
@@ -108,21 +108,21 @@ function ajoutpanier(idprod,qte,couleur){
     }else{
         // convertir notre panier local en json
         let cartJson = JSON.parse(objpanier);
-       //recherche de l'id, index et couleur du produit 
+        //recherche de l'id, index et couleur du produit 
         let resultat = cartJson.find( cart => cart['idproduit'] === idprod && cart['couleur'] === couleur);
         const indice = cartJson.findIndex(cart => cart['idproduit'] === idprod && cart['couleur'] === couleur);
-       
+        
         if (resultat == null) {
             // ajouter le produit si nouveau produit
             cartJson.push(panierJson);
             localStorage.setItem("cart", JSON.stringify(cartJson));
-        
+            
         } else {
             // mise à jour de la quantité du produit (même produit et même couleur)
             let qteprod =  0;
-           // ajout de la quantité
+            // ajout de la quantité
             qteprod = Number(qte) + Number(cartJson[indice]['qte']);
-           //Mise à jour du panier en local
+            //Mise à jour du panier en local
             cartJson[indice]['qte'] = qteprod;
             localStorage.setItem("cart", JSON.stringify(cartJson));
         }
@@ -131,15 +131,15 @@ function ajoutpanier(idprod,qte,couleur){
 
 // fonction click sur le bouton ajout panier
 addcart.addEventListener('click', function(){
-  let valide =  validate();
-  if (valide) {
-   //localStorage.clear();
-    ajoutpanier(id, quantite.value, colors.value);
-    alert("Ajouter au panier !");
-
-    // reinitialiser la quantié et la couleur après l'ajout au panier
-    quantite.value = 0;
-    colors.value = "";
-  }
-
+    let valide =  validate();
+    if (valide) {
+        //localStorage.clear();
+        ajoutpanier(id, quantite.value, colors.value);
+        alert("Ajouter au panier !");
+        
+        // reinitialiser la quantié et la couleur après l'ajout au panier
+        quantite.value = 0;
+        colors.value = "";
+    }
+    
 })
