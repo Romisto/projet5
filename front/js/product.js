@@ -28,12 +28,11 @@ let quantite = document.getElementById('quantity');
 let addcart = document.getElementById('addToCart');
 
 
-function nombreAvecEspace(nr) {
-    return nr.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
 
-
-// fonction pour recupérer un produit de url api
+/**
+ * fonction pour recupérer un produit de url api 
+ * @return { Promise }
+ */
 async function getProduit() {
     try {
         let res = await fetch(urlprod);
@@ -43,14 +42,17 @@ async function getProduit() {
     }
 }
 
-// fonction pour afficher le détail d'un produit
+/**
+ * fonction pour afficher le détail d'un produit 
+ * @return { Promise }
+ */
 async function detailProduit() {
     //declaration du produit recuperé
     let produit = await getProduit();
     
     // affectation des valeurs à la fiche produit
     title.innerText = produit.name;
-    price.innerText = nombreAvecEspace(produit.price);
+    price.innerText = new Intl.NumberFormat().format(produit.price);
     description.innerText = produit.description;
     produit.colors.forEach(color => {
         // <option value="blanc">blanc</option>
@@ -71,7 +73,10 @@ detailProduit();
 
 // **************  AJOUT DU PANIER   ***********   //
 
-// fonction validation
+/**
+ * fonction validation 
+ * @returns { boolean }
+ */
 function validate() {
     
     if( colors.value == "" ) {
@@ -79,7 +84,7 @@ function validate() {
         colors.focus() ;
         return false;
     }
-    if( quantite.value == 0 || quantite.value > 100 ) {
+    if( quantite.value <= 0 || quantite.value > 100 ) {
         alert( "Saisir une quantité entre 1 et 100" );
         colors.focus() ;
         return false;
@@ -87,6 +92,12 @@ function validate() {
     return true
 }
 
+/**
+ * fonction ajout panier
+ * @param {*} idprod 
+ * @param {*} qte 
+ * @param {*} couleur 
+ */
 function ajoutpanier(idprod,qte,couleur){
     //declaration localstorage panier
     let objpanier = localStorage.getItem("cart");
@@ -129,7 +140,9 @@ function ajoutpanier(idprod,qte,couleur){
     }
 }
 
-// fonction click sur le bouton ajout panier
+/**
+ * fonction click sur le bouton ajout panier 
+ */
 addcart.addEventListener('click', function(){
     let valide =  validate();
     if (valide) {

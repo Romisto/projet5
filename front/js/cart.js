@@ -1,7 +1,6 @@
 //  declaration panier en local
 let objpanier = localStorage.getItem("cart");
 let cartJson = JSON.parse(objpanier);
-console.log(cartJson);
 
 //  declaration des variables de la page panier
 let cartitems = document.getElementById('cart__items');
@@ -14,7 +13,11 @@ let cart__price = document.querySelector('.cart__price');
 // div formulaire commande
 let cart__order = document.querySelector('.cart__order');
 
-// fonction de récupération prix du produit
+/**
+ * fonction de récupération prix du produit 
+ * @param {*} idprod 
+ * @returns { Promise }
+ */
 async function prixProduit(idprod) {
     let urlprod = "http://localhost:3000/api/products/"+idprod;
     try {
@@ -25,7 +28,13 @@ async function prixProduit(idprod) {
     }
 }
 
-// fonction calcul du montant et la quantité total du panier
+
+/**
+ * fonction calcul du montant et la quantité total du panier
+ * @returns { Object } montant
+ * @returns { number } montant.totalPrice - total montant du panier
+ * @returns { number } montant.totalQuantity - total quantité du panier
+ */
 async function totalPanier() {
     let totalmontant = 0;
     let totalqte = 0;
@@ -53,15 +62,16 @@ async function totalPanier() {
     return montant;
     
 }
-
-
+/**
+ * fonction afficher panier
+ */
 async function afficherPanier() {
     if (objpanier == null || objpanier == "[]") {
         // masquer div total montant et formulaire
         cart__price.style.display = "none";
         cart__order.style.display = "none";
         
-        // creéation element h4 pour afficher un text
+        // création element h4 pour afficher un text
         let h4 = document.createElement('h4');
         h4.innerText = "Panier vide";
         h4.style.textAlign = "center";
@@ -93,6 +103,7 @@ async function afficherPanier() {
             article.className = "cart__item";
             article.setAttribute('data-id' , cartJson[j]['idproduit']);
             article.setAttribute('data-color' , cartJson[j]['couleur']);
+            
             
             // attribue element div cart__item__img
             cart__item__img.className = "cart__item__img";
@@ -152,7 +163,9 @@ async function afficherPanier() {
 
 afficherPanier();
 
-//fonction qui met à jour la quantité saisie de l'utilisateur dans le panier
+/**
+ * fonction qui met à jour la quantité saisie de l'utilisateur dans le panier 
+ */
 async function modification_quantite() {
     //declaration d'une variable pour selectionner toutes les classes quantités
     let quantites = document.querySelectorAll('.itemQuantity');
@@ -160,7 +173,7 @@ async function modification_quantite() {
     quantites.forEach(qte => {
         //prise en compte de la quantité saisie si quantité est comprise entre 1 et 100 sinon affichage alerte       
         qte.addEventListener('change', function(){
-            if (this.value == 0 || this.value > 100){
+            if (this.value <= 0 || this.value > 100){
                 return alert("Saisir une quantité comprise entre 1 et 100");
             } else {
                 // selection des div par la methode closest
@@ -189,7 +202,9 @@ async function modification_quantite() {
     
 }
 
-//fonction suppression produit
+/**
+ * fonction suppression produit 
+ */
 async function suppression_produit() {
     //declarer la fonction qui permet de supprimer un produit dans le panier
     let btn_supprimer = document.querySelectorAll('.deleteItem');
@@ -257,7 +272,11 @@ const lastNameError = document.getElementById('lastNameErrorMsg');
 const adresseError = document.getElementById('addressErrorMsg');
 const cityError = document.getElementById('cityErrorMsg');
 const emailError = document.getElementById('emailErrorMsg');
-// fonction validation
+
+/**
+ * fonction validation 
+ * @returns {void}
+ */
 function validate() {
     
     // declaration variable 
@@ -333,7 +352,9 @@ btncommande.addEventListener('click', function(e) {
 });
 
 
-// fonction pour passer la commande
+/**
+ * fonction pour passer la commande 
+ */
 async function commande() {
     // déclaration url api
     let url = "http://localhost:3000/api/products/order";

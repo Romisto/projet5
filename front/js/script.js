@@ -4,17 +4,32 @@ let urlliste = "http://localhost:3000/api/products";
 //declaration de l'id de la page index
 let tabitems = document.getElementById('items');
 
-// fonction créer un element
+
+/**
+ * fonction créer un element
+ * @param {*} element 
+ * @returns { HTMLElement }
+ */
 function createNode(element) {
     return document.createElement(element);
 }
 
-// fonction ajouter element dans un element parent
+
+/**
+ * fonction ajouter element dans un element parent 
+ * @param {*} parent 
+ * @param {*} el 
+ * @returns { HTMLElement }
+ */
 function ajoutelement(parent, el) {
     return parent.appendChild(el);
 }
 
-// fonction pour recupérer la liste produits a partir de url api
+
+/**
+ * fonction pour recupérer la liste produits a partir de url api 
+ * @returns { Promise }
+ */
 async function getProduits() {
     try {
         let res = await fetch(urlliste);
@@ -24,7 +39,9 @@ async function getProduits() {
     }
 }
 
-//  fonction affiche la liste des produits dans la page index
+/**
+ * fonction affiche la liste des produits dans la page index
+ */
 async function afficheProduits() {
     
     //declaration liste des produits recupérés    
@@ -46,7 +63,10 @@ async function afficheProduits() {
         p.innerText = arti.description;
         //attribution du lien du bouton affichez produit
         a.href = "./product.html?id="+arti._id;
-        //fonction pour ajouter les elements de la page index dans les elements parents
+        
+        /**
+         * appel de la fonction pour ajouter les elements de la page index dans les elements parents
+         */
         ajoutelement(article, img);
         ajoutelement(article, h3);
         ajoutelement(article, p);
