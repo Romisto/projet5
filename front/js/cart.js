@@ -416,23 +416,7 @@ async function commande() {
         
         // récupération du numéro de la commande
         const orderId = result.orderId;
-        /*
-        const mont = await totalPanier();
-        const resultcommande = {
-            contact : result.contact,
-            order : result.orderId,
-            totalcde: mont.totalmontant
-            ,
-        }
-        if (commandeproduit == null) {
-            commandeproduit = [];
-            commandeproduit.push(resultcommande);
-            localStorage.setItem("commande", JSON.stringify(commandeproduit));
-        }else {
-            commandeproduit.push(resultcommande);
-            localStorage.setItem("commande", JSON.stringify(commandeproduit));
-        }
-        */   
+       
         localStorage.removeItem('cart');
         // reinitialiser les valeurs du formulaire
         firstName.value = "";
