@@ -150,7 +150,7 @@ async function afficherPanier() {
             cartitems.appendChild(article);
             
         }
-        // affichage du panier 
+        // affichage total panier 
         await totalPanier();
         
         // fonction modification de la quantité
@@ -279,12 +279,22 @@ const emailError = document.getElementById('emailErrorMsg');
  */
 function validate() {
     
-    // declaration variable 
+    // declaration variable mail
     let format_mail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     let lblvalider = 0;
+
+    let format_nom_prenoms = /^[a-zA-Z]+$/g;
+    
     
     if( firstName.value == "" ) {
         firstNameError.innerText = "Saisir votre prénoms";
+        firstName.focus();
+        
+        lblvalider += 1;
+
+        
+    } else if (!firstName.value.match(format_nom_prenoms)) {
+        firstNameError.innerText = "le prenom doit comporter des chaines de caractere";
         firstName.focus();
         
         lblvalider += 1;
@@ -292,37 +302,45 @@ function validate() {
         firstNameError.innerText = "";
         lblvalider = lblvalider;
         
-    }
+    } 
+
     
     if ( lastName.value == "" ) {
         lastNameError.innerText =  "Saisir votre nom";
         lastName.focus() ;
         lblvalider += 1;
-    }else {
+
+    } else if (!lastName.value.match(format_nom_prenoms)) {
+        lastNameError.innerText = "le nom doit comporter des chaines de caractere";
+        lastName.focus();
+        
+        lblvalider += 1; 
+
+    } else {
         lastNameError.innerText = "";
         lblvalider = lblvalider;
     }
     
-    if( address.value == "" ) {
+    if ( address.value == "" ) {
         adresseError.innerText = "Saisir votre adresse";
         address.focus() ;
         lblvalider += 1;
         
-    }else{
+    } else {
         adresseError.innerText = "";
         lblvalider = lblvalider;
     }
     
-    if( city.value == "" ) {
+    if ( city.value == "" ) {
         cityError.innerText = "Saisir votre ville";
         city.focus() ;
         lblvalider += 1;
         
-    }else{
+    } else {
         cityError.innerText = "";
         lblvalider = lblvalider;
     }
-    if( email.value == "" ) {
+    if ( email.value == "" ) {
         emailError.innerText ="Saisir une adresse e-mail";
         email.focus() ;
         lblvalider += 1;
