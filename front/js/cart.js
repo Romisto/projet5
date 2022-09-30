@@ -283,7 +283,7 @@ function validate() {
     let format_mail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     let lblvalider = 0;
 
-    let format_nom_prenoms = /^[a-zA-Z]+$/g;
+    let format_nom_prenoms = /^[a-zA-Z -]+$/g;
     
     
     if( firstName.value == "" ) {
